@@ -8,6 +8,8 @@ Install
 
 	cd node-red/nodes/
 	git clone https://github.com/mrkrasser/node-red-contrib-bmp085.git
+	cd node-red-contrib-bmp085
+	npm install
 
 
 Pre-reqs
@@ -21,10 +23,16 @@ For Raspberry Pi users: enable i2c on your Pi and add pi user to i2c group
 Usage
 -----
 
-Node sends message with temperature and pressure when receive input message.
-Outputs an object called <b>msg</b> containing **msg.temperature** with temp in Celsius degrees and **msg.pressure** with pressure in mmHg.
+Outputs msg.payload
+
+**msg.payload.temperature** - temperature in Celsius degrees
+
+**msg.payload.pressure** - pressure in mmHg
+
+You can specify a time in seconds between requests.
 
 ![](example/node-red-bmp085-flow.png)
 
+Example Node-RED flow:
 
-	[{"id":"5e951e2b.af702","type":"debug","name":"debug","active":true,"console":"false","complete":"true","x":572,"y":324,"z":"e07c9390.25d6f","wires":[]},{"id":"27da19cf.f3bf66","type":"inject","name":"tick","topic":"","payload":"ererer","payloadType":"string","repeat":"","crontab":"","once":false,"x":179,"y":250,"z":"e07c9390.25d6f","wires":[["5da2c9e6.ef7578"]]},{"id":"5da2c9e6.ef7578","type":"bmp085","name":"","address":"0x77","device":"/dev/i2c-1","x":367,"y":297,"z":"e07c9390.25d6f","wires":[["5e951e2b.af702"]]}]
+	[{"id":"e7da534a.5bc17","type":"template","name":"text","field":"payload","template":"Temperature: {{payload.temperature}}°C; Pressure: {{payload.pressure}}mmHg","x":869,"y":183,"z":"e07c9390.25d6f","wires":[["15f75748.2632a1"]]},{"id":"15f75748.2632a1","type":"debug","name":"","active":true,"console":"false","complete":"payload","x":1061,"y":95,"z":"e07c9390.25d6f","wires":[]},{"id":"dc11fb8f.65593","type":"bmp085","name":"","address":"0x77","device":"/dev/i2c-1","timer":"15","x":717,"y":284,"z":"e07c9390.25d6f","wires":[["e7da534a.5bc17"]]}]

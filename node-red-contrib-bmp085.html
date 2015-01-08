@@ -1,5 +1,5 @@
 <!--
-  Copyright 2015 Sergey Krasnov <me@sergeykrasnov.ru>
+  Copyright 2015 Sergey Krasnov <mrkrasser@gmail.com>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -22,20 +22,26 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 	<div class="form-row">
-        <label for="node-input-address"><i class="fa fa-tasks"></i> Address</label>
+        <label for="node-input-address"><i class="fa fa-cog"></i> Address</label>
         <input type="text" id="node-input-address" placeholder="Address">
     </div>
 	<div class="form-row">
-        <label for="node-input-device"><i class="fa fa-tasks"></i> Device</label>
+        <label for="node-input-device"><i class="fa fa-cog"></i> Device</label>
         <input type="text" id="node-input-device" placeholder="Device">
     </div>
+	<div class="form-row">
+        <label for="node-input-timer"><i class="fa fa-clock-o"></i> Repeat time</label>
+        <input type="text" id="node-input-timer" placeholder="Timer">
+    </div>
 </script>
-
+<style>
+</style>
 
 <!-- Help text -->
 <script type="text/x-red" data-help-name="bmp085">
-   <p>BMP085 pressure sensor node. Sends message with temperature and pressure when receive input message.</p>
-   <p>Outputs an object called <b>msg</b> containing <br>msg.temperature<br/> with temp in Celsius degrees and <br>msg.pressure<br/> with pressure in mmHg</p>
+   <p>BMP085 pressure sensor. Read data via i2c and sends message with current temperature and pressure.</p>
+   <p>Output <b>msg.payload</b>.<br><b>msg.payload.temperature</b> - temperature in Celsius degrees. <b>msg.payload.pressure</b> - pressure in mmHg.</p>
+   <p>You can specify a time in seconds between requests.</p>
 </script>
 
 <!-- Register node type  -->
@@ -45,10 +51,11 @@
         defaults: {        
             name: {value:""},  
             address: {value: '0x77', required:true},
-			device: {value: '\/dev\/i2c-1', required:true}
+			device: {value: '\/dev\/i2c-1', required:false},
+			timer: {value: '15', required:true}
         },
 		color:"#d8bfd8",
-        inputs:1,              
+        inputs:0,              
         outputs:1,          
         icon: "chip.png",   
         label: function() {   

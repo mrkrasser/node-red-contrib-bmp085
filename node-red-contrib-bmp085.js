@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Sergey Krasnov <me@sergeykrasnov.ru>
+ * Copyright 2015 Sergey Krasnov <mrkrasser@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +15,39 @@
  **/
  
 // BMP085 Node-RED node file
-
-
 module.exports = function(RED) {
 	var BMP085 = require('bmp085');
 
-    // The main node definition - most things happen in here
-    function bmp085_Node(n) {
-        RED.nodes.createNode(this,n);
+    function bmp085_Node(config) {
+        RED.nodes.createNode(this,config);
 
         // node configuration
-		this.address = n.address;
-		this.device = n.device;
+		this.address = config.address;
+		this.device = config.device;
+		this.timer = config.timer * 1000;
 		var node = this;
 		
-        // begin work on inputs
-        node.on('input', function (msg) {
-			var sensor = new BMP085( { 'mode': 1,        
-				'address': this.address,        
+		var sensor = new BMP085({
+				'mode': 2,
+				'address': this.address,
 				'device': this.device
-			});
+		});
+		
+		var getData = function(){
+			// TODO: error handling
 			sensor.read(function (data) {			
-				msg.temperature = data.temperature;
-				msg.pressure = data.pressure/1.3332239;
-				msg.pressure = msg.pressure.toFixed();
+				data.pressure = (data.pressure/1.3332239).toFixed();
+				var msg = { payload: data };
 				node.send(msg);
 			});	
-        });
+		}
+		
+		getData(); // run on start
+		
+		tID = setInterval(getData, this.timer);
+		node.on("close", function() {
+			clearInterval(tID);
+		});
     }
 
     // Register the node by name.
