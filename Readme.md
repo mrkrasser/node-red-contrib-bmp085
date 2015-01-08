@@ -31,7 +31,7 @@ Outputs msg.payload
 
 You can specify a time in seconds between requests.
 
-![](example/node-red-bmp085-flow.png)
+![node-red-bmp085-flow](https://cloud.githubusercontent.com/assets/4464231/5672613/02c030dc-97a3-11e4-90c8-45385801d63b.png)
 
 Example Node-RED flow:
 
