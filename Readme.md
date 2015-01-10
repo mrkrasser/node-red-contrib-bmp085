@@ -1,21 +1,18 @@
 node-red-contrib-bmp085
-=====================
+========================
 
-A <a href="http://nodered.org" target="_new">Node-RED</a> node to receive data from [Bosch BMP085 barometer sensor](http://www.adafruit.com/products/391) using i2c.
+A <a href="http://nodered.org" target="_new">Node-RED</a> node to receive data from [Bosch BMP085 barometer sensor](http://www.adafruit.com/products/391) using i2c. Use bmp085 library.
 
 Install
 -------
 
-	cd node-red/nodes/
-	git clone https://github.com/mrkrasser/node-red-contrib-bmp085.git
-	cd node-red-contrib-bmp085
-	npm install
+Run the following command in the root directory of your Node-RED install
+
+	npm install node-red-contrib-bmp085
 
 
 Pre-reqs
 --------
-
-	npm install bmp085	
 
 For Raspberry Pi users: enable i2c on your Pi and add pi user to i2c group
 
