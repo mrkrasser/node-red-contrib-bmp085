@@ -6,10 +6,10 @@ A <a href="http://nodered.org" target="_new">Node-RED</a> node to receive data f
 Install
 -------
 
-Run the following command in the root directory of your Node-RED install
-
-	npm install node-red-contrib-bmp085
-
+	cd node-red/nodes
+	git clone https://github.com/mrkrasser/node-red-contrib-bmp085.git
+	cd node-red-contrib-bmp085
+	npm install
 
 Pre-reqs
 --------
