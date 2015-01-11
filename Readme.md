@@ -6,21 +6,19 @@ A <a href="http://nodered.org" target="_new">Node-RED</a> node to receive data f
 Install
 -------
 
-	cd node-red/nodes
-	git clone https://github.com/mrkrasser/node-red-contrib-bmp085.git
-	cd node-red-contrib-bmp085
-	npm install
+Run command on Node-RED installation directory
+
+	npm install node-red-contrib-bmp085
 
 Pre-reqs
 --------
 
 For Raspberry Pi users: enable i2c on your Pi and add pi user to i2c group
 
-
 Usage
 -----
 
-Outputs msg.payload
+Return msg.payload.
 
 **msg.payload.temperature** - temperature in Celsius degrees
 
