@@ -17,14 +17,6 @@
 <!-- Edit dialog  -->
 
 <script type="text/x-red" data-template-name="bmp085">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-	<div class="form-row">
-        <label for="node-input-address"><i class="fa fa-cog"></i> Address</label>
-        <input type="text" id="node-input-address" placeholder="Address">
-    </div>
 	<div class="form-row">
         <label for="node-input-device"><i class="fa fa-cog"></i> Device</label>
         <input type="text" id="node-input-device" placeholder="Device">
@@ -32,6 +24,10 @@
 	<div class="form-row">
         <label for="node-input-timer"><i class="fa fa-repeat"></i> Repeat time</label>
         <input type="text" id="node-input-timer" placeholder="Timer">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 <style>
@@ -49,10 +45,9 @@
     RED.nodes.registerType('bmp085',{
         category: 'hardware',     
         defaults: {        
-            name: {value:""},  
-            address: {value: '0x77', required:true},
-			device: {value: '\/dev\/i2c-1', required:false},
-			timer: {value: '15', required:true}
+  			device: {value: '\/dev\/i2c-1', required:false},
+			timer: {value: '15', required:true},
+			name: {value:""} 
         },
 		color:"#d8bfd8",
         inputs:0,              

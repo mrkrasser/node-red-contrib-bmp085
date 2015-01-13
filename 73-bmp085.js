@@ -22,20 +22,19 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
 
         // node configuration
-		this.address = config.address;
 		this.device = config.device;
 		this.timer = config.timer * 1000;
 		var node = this;
 		
 		var sensor = new BMP085({
 				'mode': 2,
-				'address': this.address,
+				'address': '0x77',
 				'device': this.device
 		});
 		
 		var getData = function(){
 			// TODO: error handling
-			sensor.read(function (data) {			
+			sensor.read(function (data) {
 				data.pressure = (data.pressure/1.3332239).toFixed();
 				var msg = { payload: data };
 				node.send(msg);
