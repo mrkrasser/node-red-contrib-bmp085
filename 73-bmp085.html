@@ -103,7 +103,6 @@
         },
         oneditprepare: function () {
             var correction = $("#node-input-seaLevel");
-//            var heightUnits = $("#node-input-heightUnits");
             var height = $("#node-input-height");
             correction.change(function () {
                 var id = correction.find("option:selected").val();
@@ -115,14 +114,6 @@
             });
             correction.val(this.seaLevel);
             correction.change();
-//            heightUnits.change(function () {
-//                var id = heightUnits.find("option:selected").val();
-//                if (id == "m") {
-//                    height.val(Math.round(height.val()*0.3048*10)/10);
-//                } else {
-//                    height.val(Math.round(height.val()/0.3048*10)/10);
-//                }
-//            });
             if (this.heightUnits == "m") {
                 height.val(this.height);
             } else {
