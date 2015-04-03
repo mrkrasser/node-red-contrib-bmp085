@@ -18,6 +18,12 @@
 module.exports = function(RED) {
 	var BMP085 = require('bmp085');
 
+// Set the bmp085 debug option from the environment variable
+	var debugOption = false;
+	if (process.env.hasOwnProperty("RED_DEBUG") && process.env.RED_DEBUG.indexOf("bmp085") >= 0) {
+		debugOption = true;
+	}
+
     function bmp085_Node(config) {
         RED.nodes.createNode(this,config);
 
@@ -29,7 +35,8 @@ module.exports = function(RED) {
 		var sensor = new BMP085({
 				'mode': 2,
 				'address': '0x77',
-				'device': this.device
+				'device': this.device,
+				'debug' : debugOption
 		});
 		
 		var getData = function(){
