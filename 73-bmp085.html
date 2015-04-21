@@ -22,8 +22,40 @@
         <input type="text" id="node-input-device" placeholder="Device">
     </div>
 	<div class="form-row">
-        <label for="node-input-timer"><i class="fa fa-repeat"></i> Repeat time</label>
-        <input type="text" id="node-input-timer" placeholder="Timer">
+        <label for="node-input-timer"><i class="fa fa-repeat"></i> Update at</label>
+        <input type="text" id="node-input-timer" placeholder="Timer" style="width:17%">
+        <label>sec intervals</label>
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-tachometer"></i> Units</label>
+        <label for="node-input-pressureUnits" style="width:15%">Pressure:</label>
+        <select id="node-input-pressureUnits" style="width:20%">
+            <option value="mmHg">mm Hg</option>
+            <option value="hPa">hPa</option>
+            <option value="mBar">mBar</option>
+            <option value="inHg">in Hg</option>
+        </select>
+        <label for="node-input-temperatureUnits"> Temperature:</label>
+        <select id="node-input-temperatureUnits" style="width:12%">
+            <option value="degC">˚C</option>
+            <option value="degF">˚F</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-seaLevel"><i class="fa fa-ship"></i> Correction</label>
+        <select id="node-input-seaLevel" style="width:73%">
+            <option value="QFE">output actual uncorrected pressure</option>
+            <option value="QNH">output pressure corrected to sea level</option>
+        </select>
+    </div>
+    <div class="form-row" id="node-input-row-height">
+        <label></label>
+        <label for="node-input-height" style="width:38%">Height above sea level:</label>
+        <input type="text" id="node-input-height" style="width:17%">
+        <select id="node-input-heightUnits" style="width:12%">
+            <option value="m">m</option>
+            <option value="ft">ft</option>
+        </select>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -35,9 +67,14 @@
 
 <!-- Help text -->
 <script type="text/x-red" data-help-name="bmp085">
-   <p>BMP085 pressure sensor. Read data via i2c and sends message with current temperature and pressure.</p>
-   <p>Sent output <b>msg.payload</b>.<br><b>msg.payload.temperature</b> - temperature in Celsius degrees. <b>msg.payload.pressure</b> - pressure in mmHg.</p>
-   <p>You can specify a time in seconds between requests.</p>
+   <p>Reads data from a Bosch BMP085 or BMP180 barometric pressure sensor using the I2C interface</p>
+   Periodically reads the sensor and sends a message containing both temperature and pressure
+   (<b>msg.payload.temperature</b> and <b>msg.payload.pressure</b>). The temperature and pressure units
+   of measurement can be selected as required.</p>
+   <p>The measured pressure can optionally be corrected to sea level, as used in meteorolgical surface
+   pressure charts, by entering the actual height above sea level of the sensor (US Standard Atmosphere;
+   maximum height 11,000m).</p>
+   <p>The measurement update interval can also be specified.</p>
 </script>
 
 <!-- Register node type  -->
@@ -47,6 +84,11 @@
         defaults: {        
   			device: {value: '\/dev\/i2c-1', required:false},
 			timer: {value: '15', required:true},
+            pressureUnits: {value: 'mmHg', required:true},
+            temperatureUnits: {value: 'degC', required:true},
+            seaLevel: {value: 'QFE', required:true},
+            height: {value:0, required:true},
+            heightUnits: {value: 'm', required:true},
 			name: {value:""} 
         },
 		color:"#d8bfd8",
@@ -58,6 +100,31 @@
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function () {
+            var correction = $("#node-input-seaLevel");
+            var height = $("#node-input-height");
+            correction.change(function () {
+                var id = correction.find("option:selected").val();
+                if (id == "QNH") {
+                    $("#node-input-row-height").show();
+                } else {
+                    $("#node-input-row-height").hide();
+                }
+            });
+            correction.val(this.seaLevel);
+            correction.change();
+            if (this.heightUnits == "m") {
+                height.val(this.height);
+            } else {
+                height.val(Math.round(this.height/0.3048*10)/10);
+            }
+        },
+        oneditsave: function () {
+            var height = $("#node-input-height");
+            if ($("#node-input-heightUnits option:selected").val() == "ft") {
+                height.val(height.val()*0.3048);
+            }
         }
     });
 </script>
