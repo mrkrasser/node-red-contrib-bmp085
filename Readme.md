@@ -1,7 +1,7 @@
 node-red-contrib-bmp085
 ========================
 
-A <a href="http://nodered.org" target="_new">Node-RED</a> node to receive data from [Bosch BMP085 barometer sensor](http://www.adafruit.com/products/391) using i2c. Use bmp085 library.
+A <a href="http://nodered.org">Node-RED</a> node to receive data from a Bosch [BMP085](http://www.adafruit.com/products/391) or [BMP180](http://www.adafruit.com/products/1603) barometer pressure sensor using I2C interface. Use bmp085 library.
 
 Install
 -------
@@ -20,14 +20,19 @@ Usage
 
 Return msg.payload.
 
-**msg.payload.temperature** - temperature in Celsius degrees
+**msg.payload.temperature** - temperature
 
-**msg.payload.pressure** - pressure in mmHg
+**msg.payload.pressure** - pressure
 
-You can specify a time in seconds between requests.
+The temperature and pressure units of measurement can be selected as required.
+
+The measured pressure can optionally be corrected to sea level, as used in meteorolgical surface pressure charts, by entering the actual height above sea level of the sensor (US Standard Atmosphere; maximum height 11,000m).
+
+The measurement update interval can also be specified.
+
 
 ![node-red-bmp085-flow](https://cloud.githubusercontent.com/assets/4464231/5672613/02c030dc-97a3-11e4-90c8-45385801d63b.png)
 
 Example Node-RED flow:
 
-	[{"id":"e7da534a.5bc17","type":"template","name":"text","field":"payload","template":"Temperature: {{payload.temperature}}°C; Pressure: {{payload.pressure}}mmHg","x":869,"y":183,"z":"e07c9390.25d6f","wires":[["15f75748.2632a1"]]},{"id":"15f75748.2632a1","type":"debug","name":"","active":true,"console":"false","complete":"payload","x":1061,"y":95,"z":"e07c9390.25d6f","wires":[]},{"id":"dc11fb8f.65593","type":"bmp085","name":"","address":"0x77","device":"/dev/i2c-1","timer":"15","x":717,"y":284,"z":"e07c9390.25d6f","wires":[["e7da534a.5bc17"]]}]
+	[{"id":"41f0fc42.bc1834","type":"template","name":"text","field":"payload","template":"Temperature: {{payload.temperature}}°C; Pressure: {{payload.pressure}}mmHg","x":982,"y":626,"z":"c2f61f76.2fd47","wires":[["51c8ed1e.6d326c"]]},{"id":"51c8ed1e.6d326c","type":"debug","name":"","active":true,"console":"false","complete":"payload","x":1174,"y":538,"z":"c2f61f76.2fd47","wires":[]},{"id":"fceb110e.7afd28","type":"bmp085","device":"/dev/i2c-1","timer":"15","pressureUnits":"mmHg","temperatureUnits":"degC","seaLevel":"QFE","height":"NaN","name":"","x":830,"y":727,"z":"c2f61f76.2fd47","wires":[["41f0fc42.bc1834"]]}]
