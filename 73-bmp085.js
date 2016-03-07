@@ -81,4 +81,4 @@ module.exports = function(RED) {
 
     // Register the node by name.
     RED.nodes.registerType("bmp085",bmp085_Node);
-}
+} 
