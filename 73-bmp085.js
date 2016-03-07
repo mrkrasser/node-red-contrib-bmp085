@@ -63,6 +63,7 @@ module.exports = function(RED) {
 					data.pressure *= Math.pow(288.15/(288.15-0.0065*node.height), 5.255876);
 				}
 				data.pressure *= node.pressureFactor;
+				data.pressure = Math.round(data.pressure);
 				if (node.temperatureUnits === "degF") {
 					data.temperature = 32 + data.temperature*1.8;
 				}
@@ -81,4 +82,5 @@ module.exports = function(RED) {
 
     // Register the node by name.
     RED.nodes.registerType("bmp085",bmp085_Node);
-} 
+}
+ 
