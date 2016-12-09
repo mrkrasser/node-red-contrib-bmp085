@@ -54,7 +54,7 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("PCA9685", pca9685Node);
 	
-    function pca9685Output(config) {
+    function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
 
 		this.on("input", function(msg) {
@@ -72,6 +72,6 @@ module.exports = function(RED) {
             }
 		});
     }
-    RED.nodes.registerType("PCA9685 Output",pca9685_Node);
+    RED.nodes.registerType("PCA9685 Output",pca9685OutputNode);
 }
  
