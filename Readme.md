@@ -31,8 +31,8 @@ The measured pressure can optionally be corrected to sea level, as used in meteo
 The measurement update interval can also be specified.
 
 
-![node-red-bmp085-flow](https://cloud.githubusercontent.com/assets/4464231/5672613/02c030dc-97a3-11e4-90c8-45385801d63b.png)
+![node-red-flow](https://cloud.githubusercontent.com/assets/4464231/5672613/02c030dc-97a3-11e4-90c8-45385801d63b.png)
 
 Example Node-RED flow:
 
-	[{"id":"41f0fc42.bc1834","type":"template","name":"text","field":"payload","template":"Temperature: {{payload.temperature}}°C; Pressure: {{payload.pressure}}mmHg","x":982,"y":626,"z":"c2f61f76.2fd47","wires":[["51c8ed1e.6d326c"]]},{"id":"51c8ed1e.6d326c","type":"debug","name":"","active":true,"console":"false","complete":"payload","x":1174,"y":538,"z":"c2f61f76.2fd47","wires":[]},{"id":"fceb110e.7afd28","type":"bmp085","device":"/dev/i2c-1","timer":"15","pressureUnits":"mmHg","temperatureUnits":"degC","seaLevel":"QFE","height":"NaN","name":"","x":830,"y":727,"z":"c2f61f76.2fd47","wires":[["41f0fc42.bc1834"]]}]
+	[{"id":"e712a5a3.f89bf8","type":"debug","z":"51946412.34716c","name":"","active":true,"console":"false","complete":"false","x":956,"y":61,"wires":[]}]

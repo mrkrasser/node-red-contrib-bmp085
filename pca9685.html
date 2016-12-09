@@ -16,9 +16,9 @@
 
 <!-- Output  -->
 
-<script type="text/x-red" data-template-name="i2c out">
+<script type="text/x-red" data-template-name="PCA9685 Output">
     <div class="form-row">
-        <label for="node-input-i2cdevice"><i class="fa fa-globe"></i> PCA9685</label>
+        <label for="node-input-pca9685"><i class="fa fa-globe"></i> PCA9685 Device</label>
         <input type="text" id="node-input-pca9685">
     </div>
     <div class="form-row">
@@ -97,7 +97,7 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('i2c-device',{
+    RED.nodes.registerType('PCA9685',{
         category: 'config',
         defaults: {
             deviceNumber: {value:1,required:true},
