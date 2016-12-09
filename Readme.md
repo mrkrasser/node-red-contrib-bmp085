@@ -1,14 +1,14 @@
-node-red-contrib-bmp085
+node-red-contrib-pca9685
 ========================
 
-A <a href="http://nodered.org">Node-RED</a> node to receive data from a Bosch [BMP085](http://www.adafruit.com/products/391) or [BMP180](http://www.adafruit.com/products/1603) barometer pressure sensor using I2C interface. Use bmp085 library.
+A <a href="http://nodered.org">Node-RED</a> node to control an NXP [PCA9685](http://www.nxp.com/products/power-management/lighting-driver-and-controller-ics/ic-led-display-control/16-channel-12-bit-pwm-fm-plus-ic-bus-led-controller:PCA9685) such as the [Adafruit Servo Driver](https://www.adafruit.com/product/815) using the I2C interface. Based on Sergey Krasnov's bmp085 node. Uses the pca9685 library.
 
 Install
 -------
 
-Run command on Node-RED installation directory
+Run the npm install command in your Node-RED node_modules directory
 
-	npm install node-red-contrib-bmp085
+	npm install node-red-contrib-pca9685
 
 Pre-reqs
 --------

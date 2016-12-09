@@ -1,26 +1,26 @@
  {
-	"name": "node-red-contrib-bmp085",
-	"version": "0.1.6",
-	"description": "Receive data from Bosch BMP085 barometer sensor with Node-RED",
+	"name": "node-red-contrib-pca9685",
+	"version": "0.1.0",
+	"description": "Control a PCA9685 board with Node-RED",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/mrkrasser/node-red-contrib-bmp085.git"
+		"url": "https://github.com/fauberso/node-red-contrib-pca9685"
 	},
-	"keywords": [ "node-red", "bmp085" ],
+	"keywords": [ "node-red", "pca9685", "servo", "pwm" ],
 	"author": {
-		"name": "Sergey Krasnov",
-		"email" : "me@sergeykrasnov.ru"
+		"name": "Frederic Auberson",
+		"email" : "frederic@auberson.net"
 	},
 	"license": "Apache",
 	"bugs": {
-		"url": "https://github.com/mrkrasser/node-red-contrib-bmp085/issues"
+		"url": "https://github.com/fauberso/node-red-contrib-pca9685/issues"
 	},
 	"node-red": {
 		"nodes": {
-			"bmp085": "73-bmp085.js"
+			"pca9685": "pca9685.js"
 		}
 	},
 	"dependencies": {
-		"bmp085": "~0.3.2"
+		"pca9685": "~4.0.3"
 	}
 }
