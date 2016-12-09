@@ -1,5 +1,5 @@
 <!--
-  Copyright 2015 Sergey Krasnov <me@sergeykrasnov.ru>
+  Copyright 2016 Frederic Auberson <frederic@auberson.net>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,117 +14,104 @@
   limitations under the License.
 -->
 
-<!-- Edit dialog  -->
+<!-- Output  -->
 
-<script type="text/x-red" data-template-name="pca9685">
-	<div class="form-row">
-        <label for="node-input-device"><i class="fa fa-cog"></i> Device</label>
-        <input type="text" id="node-input-device" placeholder="Device">
-    </div>
-	<div class="form-row">
-        <label for="node-input-timer"><i class="fa fa-repeat"></i> Update at</label>
-        <input type="text" id="node-input-timer" placeholder="Timer" style="width:17%">
-        <label>sec intervals</label>
+<script type="text/x-red" data-template-name="i2c out">
+    <div class="form-row">
+        <label for="node-input-i2cdevice"><i class="fa fa-globe"></i> PCA9685</label>
+        <input type="text" id="node-input-pca9685">
     </div>
     <div class="form-row">
-        <label><i class="fa fa-tachometer"></i> Units</label>
-        <label for="node-input-pressureUnits" style="width:15%">Pressure:</label>
-        <select id="node-input-pressureUnits" style="width:20%">
-            <option value="mmHg">mm Hg</option>
-            <option value="hPa">hPa</option>
-            <option value="mBar">mBar</option>
-            <option value="inHg">in Hg</option>
-        </select>
-        <label for="node-input-temperatureUnits"> Temperature:</label>
-        <select id="node-input-temperatureUnits" style="width:12%">
-            <option value="degC">˚C</option>
-            <option value="degF">˚F</option>
-        </select>
+        <label for="node-input-channel"><i class="fa fa-random"></i> Channel</label>
+        <input type="number" id="node-input-channel" placeholder="[msg.channel]" min=0 max=15>
     </div>
     <div class="form-row">
-        <label for="node-input-seaLevel"><i class="fa fa-ship"></i> Correction</label>
-        <select id="node-input-seaLevel" style="width:73%">
-            <option value="QFE">output actual uncorrected pressure</option>
-            <option value="QNH">output pressure corrected to sea level</option>
-        </select>
-    </div>
-    <div class="form-row" id="node-input-row-height">
-        <label></label>
-        <label for="node-input-height" style="width:38%">Height above sea level:</label>
-        <input type="text" id="node-input-height" style="width:17%">
-        <select id="node-input-heightUnits" style="width:12%">
-            <option value="m">m</option>
-            <option value="ft">ft</option>
-        </select>
+        <label for="node-input-payload"><i class="fa fa-random"></i> Payload</label>
+        <input type="sring" id="node-input-payload" placeholder="[msg.payload]">
     </div>
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-unit"><i class="fa fa-random"></i> Unit</label>
+        <select id="node-input-unit" style="width:30%">
+            <option value="microseconds">microseconds</option>
+            <option value="steps">steps</option>
+            <option value="percent">percent</option>
+        </select>
+    </div>
+   <div class="form-row">
+        <label for="node-input-onStep"><i class="fa fa-random"></i> On Step</label>
+        <input type="number" id="node-input-onStep" placeholder="0">
     </div>
 </script>
-<style>
-</style>
 
-<!-- Help text -->
-<script type="text/x-red" data-help-name="bmp085">
-   <p>Reads data from a Bosch BMP085 or BMP180 barometric pressure sensor using the I2C interface</p>
-   Periodically reads the sensor and sends a message containing both temperature and pressure
-   (<b>msg.payload.temperature</b> and <b>msg.payload.pressure</b>). The temperature and pressure units
-   of measurement can be selected as required.</p>
-   <p>The measured pressure can optionally be corrected to sea level, as used in meteorolgical surface
-   pressure charts, by entering the actual height above sea level of the sensor (US Standard Atmosphere;
-   maximum height 11,000m).</p>
-   <p>The measurement update interval can also be specified.</p>
+
+<script type="text/x-red" data-help-name="PCA9685 Output">
+   <p>Allows one of the outputs of a PCA9685 to be controlled.</p>
+    <p>Payload indicates the length of the pulse that will be sent on a particular channel.</p>
+	<p>Unit describes how the value in the payload will be evaluated:</p>
+	<p> - As a length of time (in microseconds). The PWM signal will then be High for that length of time.</p>
+	<p> - As the index of a step: The PCA9685 allows you to control when, on 4096 steps, the PWM signal becomes Low again.</P>
+    <p> - As a percentage: The PWM signal is then High for that percentage of the time</p>
+    <p>Additionally, the step on which the signal becomes High can be set. This is, in most cases, at the very start of the 4096 steps, and is usually left at 0.</p>
 </script>
 
-<!-- Register node type  -->
 <script type="text/javascript">
-    RED.nodes.registerType('pca9685',{
-        category: 'hardware',     
-        defaults: {        
-  			device: {value: '\/dev\/i2c-1', required:false},
-			timer: {value: '15', required:true},
-            pressureUnits: {value: 'mmHg', required:true},
-            temperatureUnits: {value: 'degC', required:true},
-            seaLevel: {value: 'QFE', required:true},
-            height: {value:0, required:true},
-            heightUnits: {value: 'm', required:true},
-			name: {value:""} 
+    RED.nodes.registerType('PCA9685 Output',{
+        category: 'output',
+        defaults: {
+            name: {value:""},
+            pca9685: {type:"PCA9685", required:true},
+            channel: {value:"",required:false},
+            payload: {value:"", required:false},
+            unit: {value:"steps", required:true},            
+            onStep: {value:"0", required:false}
         },
-		color:"#d8bfd8",
-        inputs:0,              
-        outputs:1,          
-        icon: "chip.png",   
-        label: function() {   
-            return this.name||"BMP085";
+        color:"#d8bfd8",
+        inputs:1,
+        outputs:0,
+        icon: "chip.png",
+        align: "right",
+        label: function() {
+            return this.name||('Output '+channel);
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
-        },
-        oneditprepare: function () {
-            var correction = $("#node-input-seaLevel");
-            var height = $("#node-input-height");
-            correction.change(function () {
-                var id = correction.find("option:selected").val();
-                if (id == "QNH") {
-                    $("#node-input-row-height").show();
-                } else {
-                    $("#node-input-row-height").hide();
-                }
-            });
-            correction.val(this.seaLevel);
-            correction.change();
-            if (this.heightUnits == "m") {
-                height.val(this.height);
-            } else {
-                height.val(Math.round(this.height/0.3048*10)/10);
-            }
-        },
-        oneditsave: function () {
-            var height = $("#node-input-height");
-            if ($("#node-input-heightUnits option:selected").val() == "ft") {
-                height.val(height.val()*0.3048);
-            }
         }
     });
-</script> 
+</script>
+
+<!-- Controller  -->
+
+<script type="text/x-red" data-template-name="PCA9685">
+    <div class="form-row">
+        <label for="node-config-input-deviceNumber"><i class="fa fa-globe"></i> I2C Device Number</label>
+        <input type="number" id="node-config-input-deviceNumber" placeholder="1" style="width: 45%;" >
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-address"><i class="fa fa-user"></i> I2C Address of the PCA9685</label>
+        <input type="number" id="node-config-input-address" placeholder="0x40">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-frequency"><i class="fa fa-user"></i> Sampling Frequency</label>
+        <input type="number" id="node-config-input-frequency" placeholder="50">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('i2c-device',{
+        category: 'config',
+        defaults: {
+            deviceNumber: {value:1,required:true},
+            address: {value:0x40,required:true},
+            frequency: {value:50,required:true}
+        },
+        label: function() {
+            return this.device;
+        }
+    });
+</script>
+
+<!-- Help text -->
+<script type="text/x-red" data-help-name="pca9685">
+   <p> <a href="http://nodered.org">Node-RED</a> node to control an NXP PCA9685 PWM Controller, such as the one found on the Adafruit Servo Driver, using the I2C interface.</p>
+</script>
+

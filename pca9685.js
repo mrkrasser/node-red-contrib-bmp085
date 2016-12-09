@@ -25,27 +25,39 @@ module.exports = function(RED) {
 		debugOption = true;
 	}
 
-    function pca9685_Node(config) {
-        RED.nodes.createNode(this,config);
-		var node = this;
-		
+    // The Server Definition - this opens (and closes) the connection
+    function pca9685Node(config) {
+        RED.nodes.createNode(this, config);
+        
         // node configuration
         // https://github.com/101100/pca9685/blob/master/examples/servo.js
         var options = {
-            i2c: i2cBus.openSync(parseInt(config.busNumber) || 1),
-            address: parseInt(config.addr) || 0x40,
-            frequency: parseInt(config.freq) || 50,
+            i2c: i2cBus.openSync(parseInt(config.deviceNumber) || 1),
+            address: parseInt(config.address) || 0x40,
+            frequency: parseInt(config.frequency) || 50,
             debug: true
         };
 
-        pwm = new Pca9685Driver(options, function startLoop(err) {
+        this.pwm = new Pca9685Driver(options, function startLoop(err) {
             if (err) {
                 console.error("Error initializing PCA9685");
                 process.exit(-1);
             }
         });
+     
         
-		node.on("input", function(msg) {
+        this.on("close", function() {
+            if (this.pwm != null) {
+            	pwm.dispose()
+            }
+        });
+    }
+    RED.nodes.registerType("PCA9685", pca9685Node);
+	
+    function pca9685Output(config) {
+        RED.nodes.createNode(this,config);
+
+		this.on("input", function(msg) {
 			unit = msg.unit;
 			channel = parseInt(msg.channel || 0);
 			payload = parseInt(msg.payload || 0);
@@ -59,13 +71,7 @@ module.exports = function(RED) {
             	pwm.setDutyCycle(channel, payload, onStep);
             }
 		});
-		
-		node.on("close", function() {
-			pwm.dispose()
-		});
     }
-
-    // Register the node by name.
-    RED.nodes.registerType("pca9685",pca9685_Node);
+    RED.nodes.registerType("PCA9685 Output",pca9685_Node);
 }
  
