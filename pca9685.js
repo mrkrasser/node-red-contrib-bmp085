@@ -57,13 +57,11 @@ module.exports = function(RED) {
     RED.nodes.registerType("PCA9685", pca9685Node);
 	
     function pca9685OutputNode(config) {
-    	console.log(util.inspect(config, {showHidden: false, depth: null}))
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
-    	console.log(util.inspect(this.pca9685, {showHidden: false, depth: null}))
         this.pca9685Node = RED.nodes.getNode(this.pca9685);
     	console.log(util.inspect(this.pca9685Node, {showHidden: false, depth: null}))
-        this.pwm = pca9685Node.pwm;
+        this.pwm = this.pca9685Node.pwm;
     	console.log(util.inspect(this.pwm, {showHidden: false, depth: null}))
         this.unit = config.unit;
         this.channel = config.channel;
@@ -76,7 +74,9 @@ module.exports = function(RED) {
 			var payload = parseInt(msg.payload || this.payload || 0);
 			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
-			util.debug("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
+			if (debugOption) {
+				console.log("Set PCA9685 "+this.pwm+" Output "+channel+" to "+payload+" "+unit);
+			}
 			
 			if (unit == "microseconds") {
 				this.pwm.setPulseLength(channel, payload, onStep);
