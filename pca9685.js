@@ -56,6 +56,7 @@ module.exports = function(RED) {
 	
     function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
+        pwm = config.pca9685.pwm;
 
 		this.on("input", function(msg) {
 			unit = msg.unit;
