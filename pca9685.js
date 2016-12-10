@@ -20,7 +20,7 @@ module.exports = function(RED) {
 	var Pca9685Driver = require("pca9685").Pca9685Driver;
 	
 // Set the pca9685 debug option from the environment variable
-	var debugOption = false;
+	var debugOption = true; //TODO: remove this once everything works
 	if (process.env.hasOwnProperty("RED_DEBUG") && process.env.RED_DEBUG.indexOf("pca9685") >= 0) {
 		debugOption = true;
 	}
@@ -41,7 +41,8 @@ module.exports = function(RED) {
         this.pwm = new Pca9685Driver(options, function startLoop(err) {
             if (err) {
                 console.error("Error initializing PCA9685");
-                process.exit(-1);
+             } else {
+            	console.debug("Initialized PCA9685");
             }
         });
      
@@ -56,7 +57,12 @@ module.exports = function(RED) {
 	
     function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
-        this.pwm = config.pca9685.pwm;
+        this.pca9685 = config.pca9685;
+        console.debug("- PCA9685="+pca9685);
+        this.pca9685Node = RED.nodes.getNode(this.pca9685);
+        console.debug("- PCA9685Node="+pca9685Node);
+        this.pwm = pca9685Node.pwm;
+        console.debug("- pwm="+pwm);        	
         this.unit = config.unit;
         this.channel = config.channel;
         this.payload = config.payload;
@@ -68,7 +74,7 @@ module.exports = function(RED) {
 			var payload = parseInt(msg.payload || this.payload || 0);
 			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
-			console.info("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
+			console.debug("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
 			
 			if (unit == "microseconds") {
 				this.pwm.setPulseLength(channel, payload, onStep);
