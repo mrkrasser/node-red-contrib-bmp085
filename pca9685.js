@@ -56,6 +56,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("PCA9685", pca9685Node);
 	
     function pca9685OutputNode(config) {
+    	console.log("- config="+config);
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
         console.log("- PCA9685="+pca9685);
