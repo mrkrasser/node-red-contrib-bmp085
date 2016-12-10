@@ -60,11 +60,11 @@ module.exports = function(RED) {
     	console.log(util.inspect(config, {showHidden: false, depth: null}))
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
-        util.debug("- PCA9685="+pca9685);
+    	console.log(util.inspect(this.pca9685, {showHidden: false, depth: null}))
         this.pca9685Node = RED.nodes.getNode(this.pca9685);
-        util.debug("- PCA9685Node="+pca9685Node);
+    	console.log(util.inspect(this.pca9685Node, {showHidden: false, depth: null}))
         this.pwm = pca9685Node.pwm;
-        util.debug("- pwm="+pwm);        	
+    	console.log(util.inspect(this.pwm, {showHidden: false, depth: null}))
         this.unit = config.unit;
         this.channel = config.channel;
         this.payload = config.payload;
