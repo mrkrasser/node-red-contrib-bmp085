@@ -31,7 +31,6 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         
         // node configuration
-        // https://github.com/101100/pca9685/blob/master/examples/servo.js
         var options = {
             i2c: i2cBus.openSync(parseInt(config.deviceNumber) || 1),
             address: parseInt(config.address) || 0x40,
