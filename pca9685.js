@@ -42,7 +42,7 @@ module.exports = function(RED) {
             if (err) {
                 console.error("Error initializing PCA9685");
              } else {
-            	util.debug("Initialized PCA9685");
+            	console.log("Initialized PCA9685");
             }
         });
      
@@ -58,11 +58,11 @@ module.exports = function(RED) {
     function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
-        util.debug("- PCA9685="+pca9685);
+        console.log("- PCA9685="+pca9685);
         this.pca9685Node = RED.nodes.getNode(this.pca9685);
-        util.debug("- PCA9685Node="+pca9685Node);
+        console.log("- PCA9685Node="+pca9685Node);
         this.pwm = pca9685Node.pwm;
-        util.debug("- pwm="+pwm);        	
+        console.log("- pwm="+pwm);        	
         this.unit = config.unit;
         this.channel = config.channel;
         this.payload = config.payload;
@@ -74,7 +74,7 @@ module.exports = function(RED) {
 			var payload = parseInt(msg.payload || this.payload || 0);
 			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
-			util.debug("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
+			console.log("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
 			
 			if (unit == "microseconds") {
 				this.pwm.setPulseLength(channel, payload, onStep);
