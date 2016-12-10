@@ -41,6 +41,10 @@
         <label for="node-input-onStep"><i class="fa fa-random"></i> On Step</label>
         <input type="number" id="node-input-onStep" placeholder="0">
     </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
 </script>
 
 
@@ -71,7 +75,7 @@
         icon: "chip.png",
         align: "right",
         label: function() {
-            return this.name||('Output '+channel);
+            return this.name||('PWM Output '+channel);
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
