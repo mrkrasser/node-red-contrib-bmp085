@@ -63,12 +63,12 @@ module.exports = function(RED) {
         this.onStep = config.onStep;
 
 		this.on("input", function(msg) {
-			var unit = msg.unit;
+			var unit = msg.unit || this.unit || "percent (assumed)";
 			var channel = parseInt(msg.channel || this.channel || 0);
 			var payload = parseInt(msg.payload || this.payload || 0);
 			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
-			console.info("Set PCA9685 Output "+channel+" to "+payload+" "+unit);
+			console.info("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
 			
 			if (unit == "microseconds") {
 				this.pwm.setPulseLength(channel, payload, onStep);
