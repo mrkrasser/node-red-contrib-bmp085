@@ -16,6 +16,7 @@
  
 // PCA9685 Node-RED node file
 module.exports = function(RED) {
+	const util = require('util')
 	var i2cBus = require("i2c-bus");
 	var Pca9685Driver = require("pca9685").Pca9685Driver;
 	
@@ -56,14 +57,14 @@ module.exports = function(RED) {
     RED.nodes.registerType("PCA9685", pca9685Node);
 	
     function pca9685OutputNode(config) {
-    	console.log("- config="+config);
+    	console.log(util.inspect(config, {showHidden: false, depth: null}))
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
-        console.log("- PCA9685="+pca9685);
+        util.debug("- PCA9685="+pca9685);
         this.pca9685Node = RED.nodes.getNode(this.pca9685);
-        console.log("- PCA9685Node="+pca9685Node);
+        util.debug("- PCA9685Node="+pca9685Node);
         this.pwm = pca9685Node.pwm;
-        console.log("- pwm="+pwm);        	
+        util.debug("- pwm="+pwm);        	
         this.unit = config.unit;
         this.channel = config.channel;
         this.payload = config.payload;
@@ -75,7 +76,7 @@ module.exports = function(RED) {
 			var payload = parseInt(msg.payload || this.payload || 0);
 			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
-			console.log("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
+			util.debug("Set PCA9685 "+pwm+" Output "+channel+" to "+payload+" "+unit);
 			
 			if (unit == "microseconds") {
 				this.pwm.setPulseLength(channel, payload, onStep);
