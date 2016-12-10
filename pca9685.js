@@ -60,9 +60,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         this.pca9685 = config.pca9685;
         this.pca9685Node = RED.nodes.getNode(this.pca9685);
-    	console.log(util.inspect(this.pca9685Node, {showHidden: false, depth: null}))
         this.pwm = this.pca9685Node.pwm;
-    	console.log(util.inspect(this.pwm, {showHidden: false, depth: null}))
         this.unit = config.unit;
         this.channel = config.channel;
         this.payload = config.payload;
@@ -83,7 +81,7 @@ module.exports = function(RED) {
             } else if (unit == "steps") {
             	this.pwm.setPulseRange(channel, onStep, payload);
             } else {
-            	this.pwm.setDutyCycle(channel, payload, onStep);
+            	this.pwm.setDutyCycle(channel, payload/100, onStep);
             }
 		});
     }
