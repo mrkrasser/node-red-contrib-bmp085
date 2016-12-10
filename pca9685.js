@@ -21,7 +21,7 @@ module.exports = function(RED) {
 	var Pca9685Driver = require("pca9685").Pca9685Driver;
 	
 // Set the pca9685 debug option from the environment variable
-	var debugOption = true; //TODO: remove this once everything works
+	var debugOption = false; 
 	if (process.env.hasOwnProperty("RED_DEBUG") && process.env.RED_DEBUG.indexOf("pca9685") >= 0) {
 		debugOption = true;
 	}
