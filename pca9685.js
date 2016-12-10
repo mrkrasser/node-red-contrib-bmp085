@@ -35,7 +35,7 @@ module.exports = function(RED) {
             i2c: i2cBus.openSync(parseInt(config.deviceNumber) || 1),
             address: parseInt(config.address) || 0x40,
             frequency: parseInt(config.frequency) || 50,
-            debug: true
+            debug: debugOption
         };
 
         this.pwm = new Pca9685Driver(options, function startLoop(err) {
@@ -63,11 +63,13 @@ module.exports = function(RED) {
 			payload = parseInt(msg.payload || 0);
 			onStep = parseInt(msg.onStep || 0);
 			
+			console.info("Set PCA9685 Output "+channel+" to "+payload+" "+unit);
+			
 			if (unit == "microseconds") {
 				pwm.setPulseLength(channel, payload, onStep);
             } else if (unit == "steps") {
             	pwm.setPulseRange(channel, onStep, payload);
-            } else if (msg.unit == "percent") {
+            } else {
             	pwm.setDutyCycle(channel, payload, onStep);
             }
 		});
