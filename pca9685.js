@@ -56,7 +56,7 @@ module.exports = function(RED) {
 	
     function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
-        pwm = config.pca9685.pwm;
+        this.pwm = config.pca9685.pwm;
 
 		this.on("input", function(msg) {
 			unit = msg.unit;
@@ -67,11 +67,11 @@ module.exports = function(RED) {
 			console.info("Set PCA9685 Output "+channel+" to "+payload+" "+unit);
 			
 			if (unit == "microseconds") {
-				pwm.setPulseLength(channel, payload, onStep);
+				this.pwm.setPulseLength(channel, payload, onStep);
             } else if (unit == "steps") {
-            	pwm.setPulseRange(channel, onStep, payload);
+            	this.pwm.setPulseRange(channel, onStep, payload);
             } else {
-            	pwm.setDutyCycle(channel, payload, onStep);
+            	this.pwm.setDutyCycle(channel, payload, onStep);
             }
 		});
     }
