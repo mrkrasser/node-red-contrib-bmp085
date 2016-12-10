@@ -57,12 +57,16 @@ module.exports = function(RED) {
     function pca9685OutputNode(config) {
         RED.nodes.createNode(this,config);
         this.pwm = config.pca9685.pwm;
+        this.unit = config.unit;
+        this.channel = config.channel;
+        this.payload = config.payload;
+        this.onStep = config.onStep;
 
 		this.on("input", function(msg) {
-			unit = msg.unit;
-			channel = parseInt(msg.channel || 0);
-			payload = parseInt(msg.payload || 0);
-			onStep = parseInt(msg.onStep || 0);
+			var unit = msg.unit;
+			var channel = parseInt(msg.channel || this.channel || 0);
+			var payload = parseInt(msg.payload || this.payload || 0);
+			var onStep = parseInt(msg.onStep || this.onStep || 0);
 			
 			console.info("Set PCA9685 Output "+channel+" to "+payload+" "+unit);
 			
