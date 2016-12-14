@@ -6,7 +6,9 @@ A <a href="http://nodered.org">Node-RED</a> node to control an NXP [PCA9685](htt
 Install
 -------
 
-Run the npm install command in your Node-RED node_modules directory
+It's advisable to install the i2c package first. Refer to [The i2c npm page](https://www.npmjs.com/package/i2c) for more informations. This may require manual steps (e.g. enabling kernel modules). Please only proceed with this module once you've managed to properly install the i2c package, to simplify troubleshooting.
+
+Once the i2c module is installed, run the npm install command in your Node-RED node_modules directory:
 
 	npm install node-red-contrib-pca9685
 
