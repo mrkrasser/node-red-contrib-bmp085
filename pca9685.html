@@ -16,7 +16,7 @@
 
 <!-- Output  -->
 
-<script type="text/x-red" data-template-name="PCA9685 Output">
+<script type="text/x-red" data-template-name="PCA9685 out">
     <div class="form-row">
         <label for="node-input-pca9685"><i class="fa fa-globe"></i> PCA9685 Device</label>
         <input type="text" id="node-input-pca9685">
@@ -48,7 +48,7 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="PCA9685 Output">
+<script type="text/x-red" data-help-name="PCA9685 out">
    <p>Allows one of the outputs of a PCA9685 to be controlled.</p>
     <p>Payload indicates the length of the pulse that will be sent on a particular channel.</p>
 	<p>Unit describes how the value in the payload will be evaluated:</p>
@@ -59,7 +59,7 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('PCA9685 Output',{
+    RED.nodes.registerType('PCA9685 out',{
         category: 'output',
         defaults: {
             name: {value:""},
@@ -92,7 +92,7 @@
     </div>
     <div class="form-row">
         <label for="node-config-input-address"><i class="fa fa-user"></i> I2C Address of the PCA9685</label>
-        <input type="number" id="node-config-input-address" placeholder="0x40">
+        <input type="number" id="node-config-input-address" placeholder="64">
     </div>
     <div class="form-row">
         <label for="node-config-input-frequency"><i class="fa fa-user"></i> Sampling Frequency</label>
@@ -105,11 +105,11 @@
         category: 'config',
         defaults: {
             deviceNumber: {value:1,required:true},
-            address: {value:0x40,required:true},
+            address: {value:64,required:true},
             frequency: {value:50,required:true}
         },
         label: function() {
-            return 'PCA9685 on I2C-'+this.deviceNumber+", Addr 0x"+this.address.toString(16);
+            return 'PCA9685 on I2C-'+this.deviceNumber+", Addr 0x"+this.address;
         }
     });
 </script>
