@@ -35,9 +35,17 @@ Then, the Output node will allow you to set the signal that is sent on one of th
 - As a percentage: The PWM signal is then High for that percentage of the time
 Additionally, the **'On' step**, i.e. the step on which the signal becomes High, can be set. This is, in most cases, at the very start of the 4096 steps, and is usually left at 0.
 
-Example:
+Example
+-------
+
+Connect your PCA9685 board to an I2C bus. In this example, we'll connect a LED to output 2, and a Servo to output 4:
+
+![alt tag](https://raw.githubusercontent.com/fauberso/node-red-contrib-pca9685/master/images/hardware.png)
+
+We will inject values into the corresponding PCA9685 output node to control the intensity of the LED and the position of the servo:
+
 ![alt tag](https://raw.githubusercontent.com/fauberso/node-red-contrib-pca9685/master/images/flow.png)
 
-Node-RED flow for the above example:
+The Node-RED flow for the above example can be copied from here:
 
 	[{"id":"feaadd05.f046d","type":"inject","z":"1fe6197f.0d25c7","name":"100%","topic":"","payload":"100","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":40,"wires":[["46bd9273.6b279c"]]},{"id":"71dd9036.680b3","type":"inject","z":"1fe6197f.0d25c7","name":"50%","topic":"","payload":"50","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":80,"wires":[["46bd9273.6b279c"]]},{"id":"89f319a8.9eea78","type":"inject","z":"1fe6197f.0d25c7","name":"Off","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":120,"wires":[["46bd9273.6b279c"]]},{"id":"1c347df.4004b82","type":"inject","z":"1fe6197f.0d25c7","name":"120°","topic":"","payload":"2100","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":180,"wires":[["d11db9bf.d2cc58"]]},{"id":"ec6ef0f2.d5b56","type":"inject","z":"1fe6197f.0d25c7","name":"60°","topic":"","payload":"1500","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":220,"wires":[["d11db9bf.d2cc58"]]},{"id":"4b72d6f3.2020e8","type":"inject","z":"1fe6197f.0d25c7","name":"0°","topic":"","payload":"900","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":260,"wires":[["d11db9bf.d2cc58"]]},{"id":"eaa2a00e.3dfca","type":"inject","z":"1fe6197f.0d25c7","name":"Off","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"x":1045,"y":300,"wires":[["d11db9bf.d2cc58"]]},{"id":"46bd9273.6b279c","type":"PCA9685 out","z":"1fe6197f.0d25c7","name":"PWM Output 2 (Led)","pca9685":"6ce45bce.cdff94","channel":"2","payload":"","unit":"percent","onStep":"0","x":1260,"y":80,"wires":[]},{"id":"d11db9bf.d2cc58","type":"PCA9685 out","z":"1fe6197f.0d25c7","name":"PWM Output 4 (Servo)","pca9685":"6ce45bce.cdff94","channel":"4","payload":"","unit":"microseconds","onStep":"0","x":1270,"y":240,"wires":[]},{"id":"6ce45bce.cdff94","type":"PCA9685","z":"","deviceNumber":"1","address":"64","frequency":"50"}]
