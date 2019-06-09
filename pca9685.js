@@ -49,7 +49,7 @@ module.exports = function(RED) {
         
         this.on("close", function() {
             if (this.pwm != null) {
-            	pwm.dispose()
+            	this.pwm.dispose()
             }
         });
     }

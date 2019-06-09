@@ -27,7 +27,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-payload"><i class="fa fa-random"></i> Payload</label>
-        <input type="sring" id="node-input-payload" placeholder="[msg.payload]">
+        <input type="text" id="node-input-payload" placeholder="[msg.payload]">
     </div>
     <div class="form-row">
         <label for="node-input-unit"><i class="fa fa-random"></i> Unit</label>
@@ -109,7 +109,7 @@
             frequency: {value:50,required:true}
         },
         label: function() {
-            return 'PCA9685 on I2C-'+this.deviceNumber+", Addr 0x"+this.address;
+            return 'PCA9685 on I2C-'+this.deviceNumber+", Addr "+this.address;
         }
     });
 </script>
