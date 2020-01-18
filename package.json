@@ -19,5 +19,9 @@
 		"nodes": {
 			"pca9685": "pca9685.js"
 		}
+	},
+	"dependencies": {
+		"pca9685": "~4.0.3",
+		"i2c-bus": "^5.x.x"
 	}
 }
