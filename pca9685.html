@@ -1,0 +1,121 @@
+<!--
+  Copyright 2016 Frederic Auberson <frederic@auberson.net>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- Output  -->
+
+<script type="text/x-red" data-template-name="PCA9685 out">
+    <div class="form-row">
+        <label for="node-input-pca9685"><i class="fa fa-globe"></i> PCA9685 Device</label>
+        <input type="text" id="node-input-pca9685">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channel"><i class="fa fa-random"></i> Channel</label>
+        <input type="number" id="node-input-channel" placeholder="[msg.channel]" min=0 max=15>
+    </div>
+    <div class="form-row">
+        <label for="node-input-payload"><i class="fa fa-random"></i> Payload</label>
+        <input type="text" id="node-input-payload" placeholder="[msg.payload]">
+    </div>
+    <div class="form-row">
+        <label for="node-input-unit"><i class="fa fa-random"></i> Unit</label>
+        <select id="node-input-unit" style="width:30%">
+            <option value="microseconds">microseconds</option>
+            <option value="steps">steps</option>
+            <option value="percent">percent</option>
+        </select>
+    </div>
+   <div class="form-row">
+        <label for="node-input-onStep"><i class="fa fa-random"></i> On Step</label>
+        <input type="number" id="node-input-onStep" placeholder="0">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<script type="text/x-red" data-help-name="PCA9685 out">
+   <p>Allows one of the outputs of a PCA9685 to be controlled.</p>
+    <p>Payload indicates the length of the pulse that will be sent on a particular channel.</p>
+	<p>Unit describes how the value in the payload will be evaluated:</p>
+	<p> - As a length of time (in microseconds). The PWM signal will then be High for that length of time.</p>
+	<p> - As the index of a step: The PCA9685 allows you to control when, on 4096 steps, the PWM signal becomes Low again.</P>
+    <p> - As a percentage: The PWM signal is then High for that percentage of the time</p>
+    <p>Additionally, the step on which the signal becomes High can be set. This is, in most cases, at the very start of the 4096 steps, and is usually left at 0.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('PCA9685 out',{
+        category: 'output',
+        defaults: {
+            name: {value:""},
+            pca9685: {type:"PCA9685", required:true},
+            channel: {value:"",required:false},
+            payload: {value:"", required:false},
+            unit: {value:"steps", required:true},            
+            onStep: {value:"0", required:false}
+        },
+        color:"#d8bfd8",
+        inputs:1,
+        outputs:0,
+        icon: "servo.png",
+        align: "right",
+        label: function() {
+            return this.name||('PWM Output '+channel);
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
+
+<!-- Controller  -->
+
+<script type="text/x-red" data-template-name="PCA9685">
+    <div class="form-row">
+        <label for="node-config-input-deviceNumber"><i class="fa fa-globe"></i> I2C Device Number</label>
+        <input type="number" id="node-config-input-deviceNumber" placeholder="1" style="width: 45%;" >
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-address"><i class="fa fa-user"></i> I2C Address of the PCA9685</label>
+        <input type="number" id="node-config-input-address" placeholder="64">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-frequency"><i class="fa fa-user"></i> Sampling Frequency</label>
+        <input type="number" id="node-config-input-frequency" placeholder="50">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('PCA9685',{
+        category: 'config',
+        defaults: {
+            deviceNumber: {value:1,required:true},
+            address: {value:64,required:true},
+            frequency: {value:50,required:true}
+        },
+        label: function() {
+            return 'PCA9685 on I2C-'+this.deviceNumber+", Addr "+this.address;
+        }
+    });
+</script>
+
+<!-- Help text -->
+<script type="text/x-red" data-help-name="pca9685">
+   <p> <a href="http://nodered.org">Node-RED</a> node to control an NXP PCA9685 PWM Controller, such as the one found on the Adafruit Servo Driver, using the I2C interface.</p>
+</script>
+
