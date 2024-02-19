@@ -29,10 +29,15 @@ module.exports = function(RED) {
     // The Server Definition - this opens (and closes) the connection
     function pca9685Node(config) {
         RED.nodes.createNode(this, config);
-        
+
         // node configuration
+	var deviceNumber = parseInt(config.deviceNumber);
+        if (isNaN(deviceNumber)) {
+            deviceNumber = 1;
+        }
+	    
         var options = {
-            i2c: i2cBus.openSync(parseInt(config.deviceNumber) || 1),
+            i2c: i2cBus.openSync(deviceNumber),
             address: parseInt(config.address) || 0x40,
             frequency: parseInt(config.frequency) || 50,
             debug: debugOption
